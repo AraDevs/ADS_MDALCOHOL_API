@@ -20,7 +20,7 @@ class CreateClientsTable extends Migration
             $table->string('business_name',100);
             $table->char('dui',10);
             $table->char('registry_no',8);
-            $table->enum('person_type',['Natural','Juridica']);
+            $table->enum('person_type',['Natural','Jurídica']);
             $table->unsignedBigInteger('seller_id');
             $table->foreign('seller_id')->references('id')->on('sellers');
             $table->timestamps();
