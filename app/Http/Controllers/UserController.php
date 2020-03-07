@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Seller;
+use Illuminate\Support\Facades\Hash;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class SellerController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,15 +16,15 @@ class SellerController extends Controller
      */
     public function index()
     {
-        $sellers = Seller::all();
-        $json = json_decode($sellers, true);
+        $users = User::all();
+        $json = json_decode($users, true);
 
         return $json;
     }
 
-    public function getActiveSellers() {
-        $sellers = Seller::where("state",1)->get();
-        $json = json_decode($sellers, true);
+    public function getActiveUsers() {
+        $users = User::where("state",1)->get();
+        $json = json_decode($users, true);
 
         return $json;
     }
@@ -49,8 +50,10 @@ class SellerController extends Controller
         //Validations
         $validator = Validator::make($request->all(),
             $rules = array(
-                'name'            => array('required','unique:sellers,name','min:4','max:100'),
-                'seller_code'         => array('required','min:4','max:100'),
+                'username'            => array('required','unique:users','min:4','max:100'),
+                'name'         => array('required','min:4','max:100'),
+                'pass'         => array('required','min:4','max:100'),
+                'user_type'         => array('required','in:Administracion, Produccion'),
                 'state'           => array('required', 'boolean'),
             )
         );
@@ -60,12 +63,12 @@ class SellerController extends Controller
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
-        $seller = New Seller();
-        $seller->fill($request->all());
+        $user = New User();
+        $user->fill($request->all());
+        $user->pass = Hash::make($request->pass);
+        $user->save();
 
-        $seller->save();
-
-        return response()->json($seller);
+        return response()->json($user);
     }
 
     /**
@@ -76,13 +79,13 @@ class SellerController extends Controller
      */
     public function show($id)
     {
-        $seller = Seller::find($id);
+        $user = User::find($id);
 
-        if(!$seller) {
-            return response()->json(['No se encontró el vendedor.'], 404);
+        if(!$user) {
+            return response()->json(['No se encontró el usuario.'], 404);
         }
 
-        $json = json_decode($seller, true);
+        $json = json_decode($user, true);
 
         return $json;
     }
@@ -107,19 +110,20 @@ class SellerController extends Controller
      */
     public function update(Request $request)
     {
-        //Fetching the seller
-        $seller = Seller::find($request['id']);
+        //Fetching the user
+        $user = User::find($request['id']);
 
-        if(!$seller) {
-            return response()->json(['No se encontró el vendedor.'], 404);
+        if(!$user) {
+            return response()->json(['No se encontró el usuario.'], 404);
         }
 
         //Validations
-        //Validations
         $validator = Validator::make($request->all(),
             $rules = array(
-                'name'            => array('required','unique:sellers,name','min:4','max:100'),
-                'seller_code'         => array('required','min:4','max:100'),
+                'username'            => array('required','min:4','max:100'),
+                'name'         => array('required','min:4','max:100'),
+                'pass'         => array('min:4','max:100'),
+                'user_type'         => array('required','in:Administracion, Produccion','min:4','max:100'),
                 'state'           => array('required', 'boolean'),
             )
         );
@@ -129,11 +133,15 @@ class SellerController extends Controller
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
-        $seller->fill($request->all());
+        $user->fill($request->all());
 
-        $seller->save();
+        if($request->pass !=""){
+            $user->pass = Hash::make($request->pass);    
+        }
 
-        return response()->json($seller);
+        $user->save();
+
+        return response()->json($user);
     }
 
     /**
