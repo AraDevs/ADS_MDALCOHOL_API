@@ -32,3 +32,15 @@ $router->get('/providers/active', 'ProviderController@getActiveProviders');
 $router->get('/providers/{id}', 'ProviderController@show');
 $router->post('/providers', 'ProviderController@store');
 $router->put('/providers', 'ProviderController@update');
+
+$router->get('/sellers', 'SellerController@index');
+$router->get('/sellers/active', 'SellerController@getActiveSellers');
+$router->get('/sellers/{id}', 'SellerController@show');
+$router->post('/sellers', 'SellerController@store');
+$router->put('/sellers', 'SellerController@update');
+
+$router->get('/users', 'UserController@index');
+$router->get('/users/active', 'UserController@getActiveUsers');
+$router->get('/users/{id}', 'UserController@show');
+$router->post('/users', 'UserController@store');
+$router->put('/users', 'UserController@update');
