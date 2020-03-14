@@ -19,7 +19,7 @@ class CreateProductionOrdersTable extends Migration
             $table->foreign('inventory_id')->references('id')->on('inventories');
             $table->integer('quantity');
             $table->date('start_date');
-            $table->date('end_date');
+            $table->date('end_date')->nullable();
             $table->date('exp_date');
             $table->integer('workers');
             $table->integer('hours');

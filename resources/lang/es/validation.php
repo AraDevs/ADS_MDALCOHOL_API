@@ -183,6 +183,8 @@ return [
         'year'                  => 'año',
 
         
+        'state'                   => 'estado',
+
         'partner.name'            => 'nombre',
         'partner.address'         => 'dirección',
         'partner.municipality_id' => 'municipio',
@@ -195,6 +197,15 @@ return [
         'person_type'             => 'tipo de persona',
         'seller_id'               => 'vendedor',
 
-        'seller_phone'            => 'teléfono de vendedor'
+        'seller_phone'            => 'teléfono de vendedor',
+
+        'inventory_id'            => 'inventario',
+        'client_id'               => 'cliente',
+
+        'quantity'                => 'cantidad',
+        'start_date'              => 'fecha de inicio',
+        'exp_date'                => 'fecha de vencimiento',
+        'workers'                 => 'trabajadores',
+        'hours'                   => 'horas'
     ],
 ];
