@@ -44,3 +44,19 @@ $router->get('/users/active', 'UserController@getActiveUsers');
 $router->get('/users/{id}', 'UserController@show');
 $router->post('/users', 'UserController@store');
 $router->put('/users', 'UserController@update');
+
+$router->get('/production_orders', 'ProductionOrderController@index');
+$router->get('/production_orders/active', 'ProductionOrderController@getActiveOrders');
+$router->get('/production_orders/finished', 'ProductionOrderController@getFinishedOrders');
+$router->get('/production_orders/unfinished', 'ProductionOrderController@getUnfinishedOrders');
+$router->get('/production_orders/{id}', 'ProductionOrderController@show');
+$router->post('/production_orders', 'ProductionOrderController@store');
+$router->put('/production_orders', 'ProductionOrderController@update');
+$router->put('/production_orders/finish', 'ProductionOrderController@finishOrder');
+
+$router->get('/special_prices', 'SpecialPriceController@index');
+$router->get('/special_prices/active', 'SpecialPriceController@getActivePrices');
+$router->get('/special_prices/inventories/{inventoryId}', 'SpecialPriceController@getPricesByInventory');
+$router->get('/special_prices/clients/{clientId}', 'SpecialPriceController@getPricesByClient');
+$router->get('/special_prices/{id}', 'SpecialPriceController@show');
+$router->post('/special_prices', 'SpecialPriceController@store');

@@ -13,5 +13,6 @@ class DatabaseSeeder extends Seeder
     {
         $this->call('DepartmentsSeeder');
         $this->call('MunicipalitiesSeeder');
+        $this->call('InventoriesSeeder');
     }
 }
