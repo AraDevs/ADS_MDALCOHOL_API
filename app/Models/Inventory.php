@@ -16,7 +16,7 @@ class Inventory extends Model
     }
 
     public function rawMaterial(){
-        return $this->hasMany('App\Models\RawMaterial');
+        return $this->hasOne('App\Models\RawMaterial');
     }
 
     public function purchaseItem(){

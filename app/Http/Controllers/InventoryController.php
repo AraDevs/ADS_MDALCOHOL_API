@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Inventory;
+use App\Models\RawMaterial;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -66,6 +67,13 @@ class InventoryController extends Controller
         $inventory = New Inventory();
         $inventory->fill($request->all());
         $inventory->save();
+
+        if($request->has('provider_id')){
+            $raw = new RawMaterial();
+            $raw->inventory_id = $inventory->id;
+            $raw->provider_id = $request->provider_id;
+            $raw->save();
+        }
 
         return response()->json($inventory);
     }
@@ -134,6 +142,11 @@ class InventoryController extends Controller
         }
 
         $inventory->fill($request->all());
+        if($request->has('provider_id')){
+            $raw = RawMaterial::find($request->raw_id);
+            $raw->provider_id = $request->provider_id;
+            $raw->save();
+        }
 
         $inventory->save();
 
