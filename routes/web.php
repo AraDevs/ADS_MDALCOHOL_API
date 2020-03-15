@@ -60,3 +60,15 @@ $router->get('/special_prices/inventories/{inventoryId}', 'SpecialPriceControlle
 $router->get('/special_prices/clients/{clientId}', 'SpecialPriceController@getPricesByClient');
 $router->get('/special_prices/{id}', 'SpecialPriceController@show');
 $router->post('/special_prices', 'SpecialPriceController@store');
+
+$router->get('/inventories', 'InventoryController@index');
+$router->get('/inventories/active', 'InventoryController@getActiveInventories');
+$router->get('/inventories/{id}', 'InventoryController@show');
+$router->post('/inventories', 'InventoryController@store');
+$router->put('/inventories', 'InventoryController@update');
+
+$router->get('/raw-materials', 'RawMaterialController@index');
+$router->get('/raw-materials/active', 'RawMaterialController@getActiveMaterials');
+$router->get('/raw-materials/{id}', 'RawMaterialController@show');
+$router->post('/raw-materials', 'RawMaterialController@store');
+$router->put('/raw-materials', 'RawMaterialController@update');
