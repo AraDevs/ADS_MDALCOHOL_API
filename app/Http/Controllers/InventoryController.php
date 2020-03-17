@@ -131,7 +131,6 @@ class InventoryController extends Controller
                 'description'         => array('required','min:4','max:500'),
                 'price'         => array('required','regex:/^\d+(\.\d{1,2})?$/','min:0'),
                 'stock'         => array('required','','min:0','integer'),
-                'type'           => array('required', 'in:Materia prima,Producto final'),
                 'state'         =>array('required', 'boolean')
             )
         );
