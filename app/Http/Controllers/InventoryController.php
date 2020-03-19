@@ -152,6 +152,13 @@ class InventoryController extends Controller
         return response()->json($inventory);
     }
 
+    //TODO: Improve this function xd
+    public static function addStocks($inventoryId, $qtyToAdd) {
+        $inventory = Inventory::find($inventoryId);
+        $inventory->stock = $inventory->stock + $qtyToAdd;
+        $inventory->save();
+    }
+
     /**
      * Remove the specified resource from storage.
      *

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ProductionOrder;
+use App\Models\Inventory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
@@ -116,13 +117,19 @@ class ProductionOrderController extends Controller
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
+        //Fetching the inventory to check if it is a raw_material
+        $inventory = Inventory::find($request['inventory_id']);
+        if($inventory->rawMaterial != null) {
+            return response()->json(['Solo pueden hacerse órdenes de producciones de productos finales.'], 422);
+        }
+
         //Changing date format
         $start_date = Carbon::createFromFormat('d/m/Y', $request->start_date);
         $exp_date = Carbon::createFromFormat('d/m/Y', $request->exp_date);
 
         //Validating that the inputed hour count is lesser than the number of hours in the selected date range
         if ($request->hours > ($start_date->diffInDays($exp_date) * 24)) {
-            return response()->json(['La cantidad de horas especificada es mayor a la cantidad de horas que hay en el rango de fechas seleccionado.'], 404);
+            return response()->json(['errors' => ['hours' =>['La cantidad de horas especificada es mayor a la cantidad de horas que hay en el rango de fechas seleccionado.']]], 404);
         }
 
         $order = New ProductionOrder();
@@ -211,7 +218,13 @@ class ProductionOrderController extends Controller
         }
 
         if($order->end_date) {
-            return response()->json(['La orden solicitada ya fue finalizada, por lo que ya no puede ser modificada.'], 422);
+            return response()->json(['errors' => ['end_date' =>['La orden solicitada ya fue finalizada, por lo que ya no puede ser modificada.']]], 422);
+        }
+
+        //Fetching the inventory to check if it is a raw_material
+        $inventory = Inventory::find($request['inventory_id']);
+        if($inventory->rawMaterial != null) {
+            return response()->json(['Solo pueden hacerse órdenes de producciones de productos finales.'], 422);
         }
 
         //Changing date format
@@ -220,7 +233,7 @@ class ProductionOrderController extends Controller
 
         //Validating that the inputed hour count is lesser than the number of hours in the selected date range
         if ($request->hours > ($start_date->diffInDays($exp_date) * 24)) {
-            return response()->json(['La cantidad de horas especificada es mayor a la cantidad de horas que hay en el rango de fechas seleccionado.'], 404);
+            return response()->json(['errors' => ['hours' =>['La cantidad de horas especificada es mayor a la cantidad de horas que hay en el rango de fechas seleccionado.']]], 404);
         }
 
         $order->fill($request->all());
@@ -245,18 +258,20 @@ class ProductionOrderController extends Controller
         }
 
         if(!($order->state)) {
-            return response()->json(['La orden solicitada se encuentra inactiva.'], 422);
+            return response()->json(['errors' => ['state' =>['La orden solicitada se encuentra inactiva.']]], 422);
         }
         
         if($order->end_date) {
-            return response()->json(['Esta orden ya había sido dada por finalizada.'], 422);
+            return response()->json(['errors' => ['end_date' =>['Esta orden ya había sido dada por finalizada.']]], 422);
         }
         
         if($order->start_date > Carbon::now()) {
-            return response()->json(['La fecha de inicio de la orden es mayor a la actual.'], 422);
+            return response()->json(['errors' => ['start_date' =>['La fecha de inicio de la orden es mayor a la actual.']]], 422);
         }
 
-        //TODO: Update inventory's stocks adding it the quantity made in this order
+        //Updating inventory's stock
+        InventoryController::addStocks($order->inventory->id,$order->quantity);
+
         
         $order->end_date = Carbon::now();
 
