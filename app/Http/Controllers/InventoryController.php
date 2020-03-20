@@ -16,7 +16,7 @@ class InventoryController extends Controller
      */
     public function index()
     {
-        $inventories = Inventory::with('rawMaterial')->get();
+        $inventories = Inventory::with('rawMaterial.provider')->get();
         $json = json_decode($inventories, true);
 
         return $json;
