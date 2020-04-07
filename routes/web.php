@@ -58,6 +58,7 @@ $router->get('/special_prices', 'SpecialPriceController@index');
 $router->get('/special_prices/active', 'SpecialPriceController@getActivePrices');
 $router->get('/special_prices/inventories/{inventoryId}', 'SpecialPriceController@getPricesByInventory');
 $router->get('/special_prices/clients/{clientId}', 'SpecialPriceController@getPricesByClient');
+$router->get('/special_prices/clients/{clientId}/inventories/{inventoryId}', 'SpecialPriceController@getPriceByInventoryAndClient');
 $router->get('/special_prices/{id}', 'SpecialPriceController@show');
 $router->post('/special_prices', 'SpecialPriceController@store');
 
@@ -67,8 +68,9 @@ $router->get('/inventories/{id}', 'InventoryController@show');
 $router->post('/inventories', 'InventoryController@store');
 $router->put('/inventories', 'InventoryController@update');
 
-$router->get('/raw-materials', 'RawMaterialController@index');
-$router->get('/raw-materials/active', 'RawMaterialController@getActiveMaterials');
-$router->get('/raw-materials/{id}', 'RawMaterialController@show');
-$router->post('/raw-materials', 'RawMaterialController@store');
-$router->put('/raw-materials', 'RawMaterialController@update');
+$router->get('/bills', 'BillController@index');
+$router->get('/bills/active', 'BillController@getActiveBills');
+$router->get('/bills/deleted', 'BillController@getDeletedBills');
+$router->get('/bills/{id}', 'BillController@show');
+$router->post('/bills', 'BillController@store');
+$router->put('/bills', 'BillController@update');

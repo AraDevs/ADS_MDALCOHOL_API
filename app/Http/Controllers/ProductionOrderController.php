@@ -119,6 +119,9 @@ class ProductionOrderController extends Controller
 
         //Fetching the inventory to check if it is a raw_material
         $inventory = Inventory::find($request['inventory_id']);
+        if($inventory->state == 0) {
+            return response()->json(['El producto especificado no se encuentra activo.'], 422);
+        }
         if($inventory->rawMaterial != null) {
             return response()->json(['Solo pueden hacerse órdenes de producciones de productos finales.'], 422);
         }

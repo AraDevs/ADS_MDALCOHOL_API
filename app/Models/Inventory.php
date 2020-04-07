@@ -19,7 +19,15 @@ class Inventory extends Model
         return $this->hasOne('App\Models\RawMaterial');
     }
 
+    public function billItem(){
+        return $this->hasMany('App\Models\BillItem');
+    }
+
     public function purchaseItem(){
-        return $this->belongsTo('App\Models\PurchaseItem');
+        return $this->hasMany('App\Models\PurchaseItem');
+    }
+
+    public function productionOrder(){
+        return $this->hasMany('App\Models\productionOrder');
     }
 }
