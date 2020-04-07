@@ -159,6 +159,12 @@ class InventoryController extends Controller
         $inventory->save();
     }
 
+    public static function removeStocks($inventoryId, $qtyToRemove) {
+        $inventory = Inventory::find($inventoryId);
+        $inventory->stock = $inventory->stock - $qtyToRemove;
+        $inventory->save();
+    }
+
     /**
      * Remove the specified resource from storage.
      *

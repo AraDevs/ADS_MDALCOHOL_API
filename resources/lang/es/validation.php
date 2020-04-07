@@ -206,6 +206,15 @@ return [
         'start_date'              => 'fecha de inicio',
         'exp_date'                => 'fecha de vencimiento',
         'workers'                 => 'trabajadores',
-        'hours'                   => 'horas'
+        'hours'                   => 'horas',
+
+        'bill_date'               => 'fecha de facturación',
+        'payment_type'            => 'tipo de pago',
+        'bill_type'               => 'tipo de facturación',
+        'perception'              => 'percepción',
+        'bill_item'               => 'lista de productos',
+        'bill_item.*.inventory_id'=> 'producto',
+        'bill_item.*.price'       => 'precio',
+        'bill_item.*.quantity'    => 'cantidad'
     ],
 ];
