@@ -65,6 +65,7 @@ $router->post('/special_prices', 'SpecialPriceController@store');
 $router->get('/inventories', 'InventoryController@index');
 $router->get('/inventories/active', 'InventoryController@getActiveInventories');
 $router->get('/inventories/{id}', 'InventoryController@show');
+$router->get('/inventories/client/{clientId}', 'InventoryController@getProductsByClient');
 $router->post('/inventories', 'InventoryController@store');
 $router->put('/inventories', 'InventoryController@update');
 

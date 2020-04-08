@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Inventory;
 use App\Models\RawMaterial;
+use App\Models\SpecialPrice;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -24,6 +25,24 @@ class InventoryController extends Controller
 
     public function getActiveInventories() {
         $inventories = Inventory::where("state",1)->get();
+        $json = json_decode($inventories, true);
+
+        return $json;
+    }
+
+    //Gets the list of inventories with the prices that are assigned to the given client id.
+    public function getProductsByClient($clientId) {
+        $inventories = Inventory::where("state",1)->where("type","Producto final")->get();
+
+        foreach($inventories as $inventory) {
+            $price = SpecialPrice::where("inventory_id",$inventory->id)->where("client_id",$clientId)->first();
+            if($price != null) {
+                if ($price->state == 1){
+                    $inventory->price = $price->price;
+                }
+            }
+        }
+
         $json = json_decode($inventories, true);
 
         return $json;
