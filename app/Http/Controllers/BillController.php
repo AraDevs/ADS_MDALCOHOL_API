@@ -155,7 +155,7 @@ class BillController extends Controller
         foreach($bill->billItem as $billItem){
             $subtotal = $subtotal + ($billItem->price * $billItem->quantity);
         }
-        if($bill->bill_type == 'Credito fiscal') {
+        if($bill->bill_type == 'Crédito fiscal') {
             $iva = $subtotal * 0.13;
         }
         if($bill->perception == 1) {
