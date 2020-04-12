@@ -18,7 +18,7 @@ class CreateUsersTable extends Migration
             $table->string('username',100);
             $table->string('name',100);
             $table->string('pass',500);
-            $table->enum('user_type',['Administracion','Produccion']);
+            $table->enum('user_type',['Administración','Producción']);
             $table->boolean('state')->default(1);
             $table->timestamps();
         });

@@ -16,7 +16,7 @@ class CreatePurchasesTable extends Migration
         Schema::create('purchases', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->date('purchase_date');
-            $table->enum('payment_type',['Contado','Credito']);
+            $table->enum('payment_type',['Contado','Crédito']);
             $table->boolean('perception')->default(1);
             $table->boolean('state')->default(1);
             $table->timestamps();

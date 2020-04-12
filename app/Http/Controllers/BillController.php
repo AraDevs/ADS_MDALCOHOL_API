@@ -64,8 +64,8 @@ class BillController extends Controller
             $rules = array(
                 'client_id'    => array('required','exists:clients,id','numeric'),
                 'bill_date'    => array('required','date_format:d/m/Y', 'before_or_equal:' . $today),
-                'payment_type' => array('required','in:Contado,Credito'),
-                'bill_type'    => array('required','in:Consumidor final,Credito fiscal,Notas de credito,Notas de debito'),
+                'payment_type' => array('required','in:Contado,Crédito'),
+                'bill_type'    => array('required','in:Consumidor final,Crédito fiscal,Notas de crédito,Notas de débito'),
                 'perception'   => array('required','boolean'),
                 'bill_item'    => array('required'),
 
