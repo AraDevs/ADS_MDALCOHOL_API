@@ -64,6 +64,8 @@ $router->post('/special_prices', 'SpecialPriceController@store');
 
 $router->get('/inventories', 'InventoryController@index');
 $router->get('/inventories/active', 'InventoryController@getActiveInventories');
+$router->get('/inventories/final_products', 'InventoryController@getActiveFinalProducts');
+$router->get('/inventories/raw_materials', 'InventoryController@getActiveRawMaterials');
 $router->get('/inventories/{id}', 'InventoryController@show');
 $router->get('/inventories/client/{clientId}', 'InventoryController@getProductsByClient');
 $router->post('/inventories', 'InventoryController@store');
@@ -75,3 +77,10 @@ $router->get('/bills/deleted', 'BillController@getDeletedBills');
 $router->get('/bills/{id}', 'BillController@show');
 $router->post('/bills', 'BillController@store');
 $router->put('/bills', 'BillController@update');
+
+$router->get('/purchases', 'PurchaseController@index');
+$router->get('/purchases/active', 'PurchaseController@getActivePurchases');
+$router->get('/purchases/deleted', 'PurchaseController@getDeletedPurchases');
+$router->get('/purchases/{id}', 'PurchaseController@show');
+$router->post('/purchases', 'PurchaseController@store');
+$router->put('/purchases', 'PurchaseController@update');

@@ -215,6 +215,9 @@ return [
         'bill_item'               => 'Lista de productos',
         'bill_item.*.inventory_id'=> 'Producto',
         'bill_item.*.price'       => 'Precio',
-        'bill_item.*.quantity'    => 'Cantidad'
+        'bill_item.*.quantity'    => 'Cantidad',
+
+        'purchase_type'           => 'Tipo de pago',
+        'purchase_item'           => 'Lista de productos'
     ],
 ];
