@@ -53,7 +53,7 @@ class UserController extends Controller
                 'username'            => array('required','unique:users','min:4','max:100'),
                 'name'         => array('required','min:4','max:100'),
                 'pass'         => array('required','min:4','max:100'),
-                'user_type'         => array('required','in:Administracion,Produccion'),
+                'user_type'         => array('required','in:Administración,Producción'),
                 'state'           => array('required', 'boolean'),
             )
         );
@@ -123,7 +123,7 @@ class UserController extends Controller
                 'username'            => array('required','min:4','max:100'),
                 'name'         => array('required','min:4','max:100'),
                 'pass'         => array('min:4','max:100'),
-                'user_type'         => array('required','in:Administracion,Produccion','min:4','max:100'),
+                'user_type'         => array('required','in:Administración,Producción','min:4','max:100'),
                 'state'           => array('required', 'boolean'),
             )
         );

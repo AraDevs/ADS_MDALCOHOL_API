@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Inventory;
 use App\Models\RawMaterial;
+use App\Models\SpecialPrice;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -16,7 +17,7 @@ class InventoryController extends Controller
      */
     public function index()
     {
-        $inventories = Inventory::with('rawMaterial')->get();
+        $inventories = Inventory::with('rawMaterial.provider')->get();
         $json = json_decode($inventories, true);
 
         return $json;
@@ -24,6 +25,38 @@ class InventoryController extends Controller
 
     public function getActiveInventories() {
         $inventories = Inventory::where("state",1)->get();
+        $json = json_decode($inventories, true);
+
+        return $json;
+    }
+
+    public function getActiveFinalProducts() {
+        $inventories = Inventory::where("type","Producto final")->where("state",1)->get();
+        $json = json_decode($inventories, true);
+
+        return $json;
+    }
+
+    public function getActiveRawMaterials() {
+        $inventories = Inventory::where("type","Materia prima")->where("state",1)->with("rawMaterial.provider.partner")->get();
+        $json = json_decode($inventories, true);
+
+        return $json;
+    }
+
+    //Gets the list of inventories with the prices that are assigned to the given client id.
+    public function getProductsByClient($clientId) {
+        $inventories = Inventory::where("state",1)->where("type","Producto final")->get();
+
+        foreach($inventories as $inventory) {
+            $price = SpecialPrice::where("inventory_id",$inventory->id)->where("client_id",$clientId)->first();
+            if($price != null) {
+                if ($price->state == 1){
+                    $inventory->price = $price->price;
+                }
+            }
+        }
+
         $json = json_decode($inventories, true);
 
         return $json;
@@ -131,7 +164,6 @@ class InventoryController extends Controller
                 'description'         => array('required','min:4','max:500'),
                 'price'         => array('required','regex:/^\d+(\.\d{1,2})?$/','min:0'),
                 'stock'         => array('required','','min:0','integer'),
-                'type'           => array('required', 'in:Materia prima,Producto final'),
                 'state'         =>array('required', 'boolean')
             )
         );
@@ -151,6 +183,19 @@ class InventoryController extends Controller
         $inventory->save();
 
         return response()->json($inventory);
+    }
+
+    //TODO: Improve this function xd
+    public static function addStocks($inventoryId, $qtyToAdd) {
+        $inventory = Inventory::find($inventoryId);
+        $inventory->stock = $inventory->stock + $qtyToAdd;
+        $inventory->save();
+    }
+
+    public static function removeStocks($inventoryId, $qtyToRemove) {
+        $inventory = Inventory::find($inventoryId);
+        $inventory->stock = $inventory->stock - $qtyToRemove;
+        $inventory->save();
     }
 
     /**

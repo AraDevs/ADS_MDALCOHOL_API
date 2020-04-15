@@ -18,8 +18,8 @@ class CreateBillsTable extends Migration
             $table->unsignedBigInteger('client_id');
             $table->foreign('client_id')->references('id')->on('clients');
             $table->date('bill_date');
-            $table->enum('payment_type',['Contado', 'Credito']);
-            $table->enum('bill_type',['Consumidor final','Credito fiscal','Notas de credito','Notas de debito']);
+            $table->enum('payment_type',['Contado', 'Crédito']);
+            $table->enum('bill_type',['Consumidor final','Crédito fiscal','Notas de crédito','Notas de débito']);
             $table->boolean('perception')->default(1);
             $table->boolean('state')->default(1);
             $table->timestamps();

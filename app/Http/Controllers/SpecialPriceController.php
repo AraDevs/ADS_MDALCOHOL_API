@@ -44,6 +44,19 @@ class SpecialPriceController extends Controller
         return $json;
     }
 
+    public function getPriceByInventoryAndClient($inventoryId, $clientId)
+    {
+        $specialPrice = SpecialPrice::where('client_id', $clientId)->where('inventory_id', $inventoryId)->first();
+        
+        if(!$specialPrice) {
+            return response()->json(['No se encontró el precio.'], 404);
+        }
+        
+        $json = json_decode($specialPrice, true);
+
+        return $json;
+    }
+
     /**
      * Show the form for creating a new resource.
      *
