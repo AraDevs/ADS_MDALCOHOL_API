@@ -30,6 +30,20 @@ class InventoryController extends Controller
         return $json;
     }
 
+    public function getActiveFinalProducts() {
+        $inventories = Inventory::where("type","Producto final")->where("state",1)->get();
+        $json = json_decode($inventories, true);
+
+        return $json;
+    }
+
+    public function getActiveRawMaterials() {
+        $inventories = Inventory::where("type","Materia prima")->where("state",1)->with("rawMaterial.provider.partner")->get();
+        $json = json_decode($inventories, true);
+
+        return $json;
+    }
+
     //Gets the list of inventories with the prices that are assigned to the given client id.
     public function getProductsByClient($clientId) {
         $inventories = Inventory::where("state",1)->where("type","Producto final")->get();
