@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -52,7 +53,7 @@ class UserController extends Controller
             $rules = array(
                 'username'            => array('required','unique:users','min:4','max:100'),
                 'name'         => array('required','min:4','max:100'),
-                'pass'         => array('required','min:4','max:100'),
+                'password'         => array('required','min:4','max:100'),
                 'user_type'         => array('required','in:Administración,Producción'),
                 'state'           => array('required', 'boolean'),
             )
@@ -65,7 +66,7 @@ class UserController extends Controller
 
         $user = New User();
         $user->fill($request->all());
-        $user->pass = Hash::make($request->pass);
+        $user->password = Hash::make($request->password);
         $user->save();
 
         return response()->json($user);
@@ -122,7 +123,7 @@ class UserController extends Controller
             $rules = array(
                 'username'            => array('required','min:4','max:100'),
                 'name'         => array('required','min:4','max:100'),
-                'pass'         => array('min:4','max:100'),
+                'password'         => array('min:4','max:100'),
                 'user_type'         => array('required','in:Administración,Producción','min:4','max:100'),
                 'state'           => array('required', 'boolean'),
             )
@@ -135,8 +136,8 @@ class UserController extends Controller
 
         $user->fill($request->all());
 
-        if($request->pass !=""){
-            $user->pass = Hash::make($request->pass);    
+        if($request->password !=""){
+            $user->password = Hash::make($request->password);    
         }
 
         $user->save();
@@ -153,5 +154,52 @@ class UserController extends Controller
     public function destroy(Seller $seller)
     {
         //
+    }
+
+
+    public function login(Request $request)
+    {
+          //validate incoming request 
+        $this->validate($request, [
+            'username' => 'required|string',
+            'password' => 'required|string',
+        ]);
+
+        
+        if (! $token = Auth::attempt(['username' => $request->username, 'password' => $request->password, 'state' => 1])) {
+            return response()->json(['Credenciales incorrectas.'], 401);
+        }
+
+        return $this->respondWithToken($token);
+    }
+
+    public function logout() {
+        try{
+
+
+            Auth::guard()->logout();
+            return response()->json('Sesión finalizada. El token ha sido invalidado.');
+        } catch (TokenExpiredException $e) {
+            return response()->json(['Token expirado'], $e->getStatusCode());
+        } catch (TokenInvalidException $e) {
+            return response()->json(['Token invalido'], $e->getStatusCode());
+        } catch (JWTException $e) {
+            return response()->json(['Token ausente'], $e->getStatusCode());
+        }
+    }
+
+
+    /**
+     * Returns a response built around the given token
+     */
+    protected function respondWithToken($token)
+    {
+        $user = Auth::user();
+
+        $user->token = $token;
+        $user->token_type = 'bearer';
+        $user->expires_in = Auth::factory()->getTTL() * 60;
+
+        return response()->json($user, 200);
     }
 }

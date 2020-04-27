@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Contracts\Auth\Factory as Auth;
 use Illuminate\Support\Facades\Auth as AuthFacade;
 
-class Authenticate
+class AuthenticateProduction
 {
     /**
      * The authentication guard factory instance.
@@ -38,6 +38,10 @@ class Authenticate
     {
         if ($this->auth->guard($guard)->guest()) {
             return response(['No está autenticado.'], 401);
+        }
+
+        if(AuthFacade::user()->user_type != "Producción"){
+            return response(['No está autorizado para realizar la operación'], 401);
         }
 
         return $next($request);

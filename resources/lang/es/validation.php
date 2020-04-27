@@ -182,7 +182,8 @@ return [
         'username'              => 'Usuario',
         'year'                  => 'Año',
 
-        
+        'pass'                    => 'Contraseña',
+
         'state'                   => 'Estado',
 
         'partner.name'            => 'Nombre',
