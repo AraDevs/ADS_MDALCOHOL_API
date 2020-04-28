@@ -82,9 +82,11 @@ $app->middleware([
 //     App\Http\Middleware\ExampleMiddleware::class
 // ]);
 
-// $app->routeMiddleware([
-//     'auth' => App\Http\Middleware\Authenticate::class,
-// ]);
+$app->routeMiddleware([
+    'auth' => App\Http\Middleware\Authenticate::class,
+    'admin'=> App\Http\Middleware\AuthenticateAdministration::class,
+    'prod' => App\Http\Middleware\AuthenticateProduction::class,
+]);
 
 /*
 |--------------------------------------------------------------------------
@@ -99,8 +101,10 @@ $app->middleware([
 $app->register(Flipbox\LumenGenerator\LumenGeneratorServiceProvider::class);
 //$app->register(Grohiro\LaravelCamelCaseJson\CamelCaseJsonResponseServiceProvider::class);
 // $app->register(App\Providers\AppServiceProvider::class);
-// $app->register(App\Providers\AuthServiceProvider::class);
+$app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
+
+$app->register(Tymon\JWTAuth\Providers\LumenServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------
