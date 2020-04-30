@@ -11,6 +11,11 @@
             margin-top: 0px;
             margin-bottom: 0px;
         }
+
+        .total{
+            text-align: right;
+        }
+        
     </style>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
@@ -38,12 +43,16 @@
                 </tr>
             </thead>
             <tbody>
+            <?php 
+                $finalTotal = 0;
+            ?>
             @foreach($data as $bill)
                 <?php
                     $total= 0;
                     foreach($bill->billItem as $item){
                         $total += $item->price;
                     }
+                    $finalTotal+=$total;
                     ?>
                 <tr>
                     <td scope="row">{{ $bill->payment_type }}</td>
@@ -55,5 +64,6 @@
                 
             </tbody>
         </table>
+        <p class="total" >Ventas totales: ${{ number_format($finalTotal,2) }}</p>
 </body>
 </html>
