@@ -91,6 +91,12 @@ $router->group(['middleware' => 'admin'], function () use ($router) {
     $router->get('/purchases/{id}', 'PurchaseController@show');
     $router->post('/purchases', 'PurchaseController@store');
     $router->put('/purchases', 'PurchaseController@update');
+
+    $router->get('/reports/sales/by_client/{id}','PdfController@salesByClient');
+    $router->get('/reports/sales/by_seller/{id}','PdfController@salesBySeller');
+    $router->get('/reports/sales/by_product/{id}','PdfController@salesByProduct');
+    $router->get('/reports/sales/by_location/{id}','PdfController@salesByLocation');
+    $router->get('/reports/sales/deleted','PdfController@salesDeleted');
 });
 
 //Routes that are exclusive to Production Managers
@@ -105,7 +111,3 @@ $router->group(['middleware' => 'prod'], function () use ($router) {
 
 });
 
-Route::get('/reports/sales/by_client/{id}','PdfController@salesByClient');
-Route::get('/reports/sales/by_seller/{id}','PdfController@salesBySeller');
-Route::get('/reports/sales/by_product/{id}','PdfController@salesByProduct');
-Route::get('/reports/sales/by_location/{id}','PdfController@salesByLocation');

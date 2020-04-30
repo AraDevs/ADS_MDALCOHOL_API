@@ -92,4 +92,23 @@ class PdfController extends Controller
         $pdf->save(storage_path().'_salesByLocation.pdf');
         return $pdf->download($current_date_time.'salesByLocation.pdf');
     }
+
+
+    public function salesDeleted()
+    {
+        $data = Bill::where('state', 0)->get();
+
+        if($data->isEmpty()){
+            $state = "No se encontraron facturas eliminadas a esta fecha";
+            $pdf = \PDF::loadView('salesDeleted', ['state'=>$state]);
+            
+        }else{
+            $pdf = \PDF::loadView('salesDeleted', ['data'=>$data]);
+            
+        }
+        
+        $current_date_time = Carbon::now()->toDateTimeString();
+        $pdf->save(storage_path().'_salesDeleted.pdf');
+        return $pdf->download($current_date_time.'salesDeleted.pdf');
+    }
 }
