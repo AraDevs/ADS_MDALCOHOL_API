@@ -26,13 +26,14 @@
         <h1>MD Alcohol</h1>
         <hr>
         
-        <h4>Reporte de ventas a {{ $data->first()->client->business_name}}</h4>
+        <h4>Reporte de ventas por {{ $data->first()->client->seller->name }}</h4>
         <h5>{{Carbon\Carbon::now()->format("d/m/Y")}}</h5>
     </header>
     <body>
     <br>
     <br>
             <h3>Lista de ventas: </h3>
+            <p class="total">Numero de ventas realizadas: {{ count($data) }} </p>
             <br>
             <table class="table">
                 <thead class="thead-dark">
@@ -65,25 +66,25 @@
                     
                 </tbody>
             </table>
-            <p class="total" >Ventas totales: ${{ number_format($finalTotal,2) }}</p>
+            <p class="total" >Total en ventas: ${{ number_format($finalTotal,2) }}</p>
     </body>
 @else
-    @if(isset($client))
+    @if(isset($seller))
         <header>
             <h1>MD Alcohol</h1>
-            <h4>Reporte de ventas a {{ $client->business_name }}</h4>
+            <h4>Reporte de ventas por {{ $seller->name }}</h4>
             <h5>{{Carbon\Carbon::now()->format("d/m/Y")}}</h5>
         </header>
         <body>
         <br>
         <br>
-                <p>El cliente {{ $client->business_name }} no tiene ninguna venta registrada a la fecha</p>
+                <p>El vendedor {{ $seller->name }} con codigo {{ $seller->seller_code }} no tiene ninguna venta registrada a la fecha</p>
         </body>
     @else
         <header>
             <h1>MD Alcohol</h1>
         </header>
-       <p>El cliente especificado no ha sido encontrado, si considera que esto es un error, por favor contacte al administrador.</p>                 
+       <p>El vendedor especificado no ha sido encontrado, si considera que esto es un error, por favor contacte al administrador.</p>                 
     @endif
 @endif
 </html>
