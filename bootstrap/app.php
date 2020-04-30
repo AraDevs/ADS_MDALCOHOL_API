@@ -124,6 +124,6 @@ $app->router->group([
 });
 
 
-
-
+$app->register(\Barryvdh\DomPDF\ServiceProvider::class);
+class_alias(\Barryvdh\DomPDF\Facade::class,'PDF');
 return $app;

@@ -104,3 +104,5 @@ $router->group(['middleware' => 'prod'], function () use ($router) {
     $router->put('/inventories', 'InventoryController@update');
 
 });
+
+Route::get('/reports/sales/by_client/{id}','PdfController@salesByClient');
