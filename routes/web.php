@@ -108,3 +108,4 @@ $router->group(['middleware' => 'prod'], function () use ($router) {
 Route::get('/reports/sales/by_client/{id}','PdfController@salesByClient');
 Route::get('/reports/sales/by_seller/{id}','PdfController@salesBySeller');
 Route::get('/reports/sales/by_product/{id}','PdfController@salesByProduct');
+Route::get('/reports/sales/by_location/{id}','PdfController@salesByLocation');

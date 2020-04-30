@@ -26,62 +26,68 @@
         <h1>MD Alcohol</h1>
         <hr>
         
-        <h4>Reporte de ventas de {{ $data->first()->client->seller->name }}</h4>
+        <h4>Reporte de ventas en {{ $data->first()->municipality->name }}</h4>
         <h5>{{Carbon\Carbon::now()->format("d/m/Y")}}</h5>
     </header>
     <body>
     <br>
     <br>
             <h3>Lista de ventas: </h3>
-            <p class="total">Numero de productos vendidos: {{ count($data) }} </p>
+            
             <br>
             <table class="table">
                 <thead class="thead-dark">
                     <tr>
+                    <th scope="col">Tipo de pago</th>
+                    <th scope="col">Tipo de venta</th>
                     <th scope="col">Fecha de venta</th>
-                    <th scope="col">Cantidad</th>
-                    <th scope="col">Precio unitario</th>
                     <th scope="col">Total</th>
                     </tr>
                 </thead>
                 <tbody>
-                <?php 
-                    $finalTotal = 0;
-                ?>
-                @foreach($data as $bill)
-                    <?php
-                        
-                        $finalTotal+=($bill->price)*($bill->quantity);
-                        ?>
-                    <tr>
-                        <td scope="row">{{ \Carbon\Carbon::parse($bill->bill->bill_date)->format('d/m/Y') }}</td>
-                        <td>{{ $bill->quantity }}</td>
-                        <td>{{ $bill->price }}</td>
-                        <td>${{ ($bill->price)*($bill->quantity) }}</td>
-                    </tr>
-                @endforeach
-                    
+                    <?php 
+                        $finalTotal = 0;
+                    ?>
+                    @foreach($data as $partner)
+                        @if(!is_null($partner->client))
+                            @foreach($partner->client->bill()->get() as $bill)
+                                <?php
+                                    $total= 0;
+                                    foreach($bill->billItem as $item){
+                                        $total += $item->price;
+                                    }
+                                    $finalTotal+=$total;
+                                    ?>
+                                <tr>
+                                    <td scope="row">{{ $bill->payment_type }}</td>
+                                    <td>{{ $bill->bill_type }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($bill->bill_date)->format('d/m/Y') }}</td>
+                                    <td>${{ number_format($total,2) }}</td>
+                                </tr>
+                            @endforeach
+                        @endif
+                    @endforeach
                 </tbody>
             </table>
             <p class="total" >Total en ventas: ${{ number_format($finalTotal,2) }}</p>
     </body>
 @else
-    @if(isset($inventory))
+    @if(isset($municipality))
         <header>
             <h1>MD Alcohol</h1>
-            <h4>Reporte de ventas por {{ $inventory->name }}</h4>
+            <h4>Reporte de ventas en {{ $municipality->name }}</h4>
             <h5>{{Carbon\Carbon::now()->format("d/m/Y")}}</h5>
         </header>
         <body>
         <br>
         <br>
-                <p>El producto {{ $inventory->name }} no registra ventas hasta la fecha</p>
+                <p>No se registran ventas en {{ $municipality->name }} hasta la fecha</p>
         </body>
     @else
         <header>
             <h1>MD Alcohol</h1>
         </header>
-       <p>El producto especificado no ha sido encontrado, si considera que esto es un error, por favor contacte al administrador.</p>                 
+       <p>La ubicacion especificada no ha sido encontrada, si considera que esto es un error, por favor contacte al administrador.</p>                 
     @endif
 @endif
 </html>

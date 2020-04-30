@@ -8,6 +8,8 @@ use App\Models\Seller;
 use App\Models\Client;
 use App\Models\Inventory;
 use App\Models\BillItem;
+use App\Models\Partner;
+use App\Models\Municipality;
 
 use PDF;
 use Carbon\Carbon;
@@ -70,5 +72,24 @@ class PdfController extends Controller
         $current_date_time = Carbon::now()->toDateTimeString();
         $pdf->save(storage_path().'_salesByProduct.pdf');
         return $pdf->download($current_date_time.'salesByProduct.pdf');
+    }
+
+    public function salesByLocation($id)
+    {
+        $data = Partner::where("municipality_id",$id)->get();
+
+        if($data->isEmpty()){
+            $municipality = Municipality::find($id);
+            $pdf = \PDF::loadView('salesByLocation', ['municipality'=>$municipality]);
+            
+        }else{
+
+            $pdf = \PDF::loadView('salesByLocation', ['data'=>$data]);
+            
+        }
+        
+        $current_date_time = Carbon::now()->toDateTimeString();
+        $pdf->save(storage_path().'_salesByLocation.pdf');
+        return $pdf->download($current_date_time.'salesByLocation.pdf');
     }
 }
