@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\Bill;
 use App\Models\Seller;
 use App\Models\Client;
+use App\Models\Inventory;
+use App\Models\BillItem;
+
 use PDF;
 use Carbon\Carbon;
 
@@ -16,46 +19,56 @@ class PdfController extends Controller
         $data = Bill::where('client_id', $id)->get();
 
         if($data->isEmpty()){
-
             $client = Client::find($id);
             $pdf = \PDF::loadView('salesByClient', ['client'=>$client]);
             
         }else{
-
             $pdf = \PDF::loadView('salesByClient', ['data'=>$data]);
             
         }
         
         $current_date_time = Carbon::now()->toDateTimeString();
         $pdf->save(storage_path().'_SalesByClient.pdf');
-
-        
-
         return $pdf->download($current_date_time.'salesByClient.pdf');
     }
 
     public function salesBySeller($id)
     {
         $data = Bill::whereHas('client.seller', function($offerQuery) use(&$id){
-            $offerQuery->where('id', '=', $id);
-        })->get();
+            $offerQuery->where('id', '=', $id);})->get();
+
+        if($data->isEmpty()){
+            $seller = Seller::find($id);
+            $pdf = \PDF::loadView('salesBySeller', ['seller'=>$seller]);
+
+        }else{
+            $pdf = \PDF::loadView('salesBySeller', ['data'=>$data]);
+
+        }
+
+        $current_date_time = Carbon::now()->toDateTimeString();
+        $pdf->save(storage_path().'_salesBySeller.pdf');
+        return $pdf->download($current_date_time.'salesBySeller.pdf');
+    }
+
+
+    public function salesByProduct($id)
+    {
+        $data = BillItem::where("inventory_id",$id)->get();
 
         if($data->isEmpty()){
 
-            $seller = Seller::find($id);
-            $pdf = \PDF::loadView('salesBySeller', ['seller'=>$seller]);
+            $inventory = Inventory::find($id);
+            $pdf = \PDF::loadView('salesByProduct', ['inventory'=>$inventory]);
             
         }else{
 
-            $pdf = \PDF::loadView('salesBySeller', ['data'=>$data]);
+            $pdf = \PDF::loadView('salesByProduct', ['data'=>$data]);
             
         }
         
         $current_date_time = Carbon::now()->toDateTimeString();
-        $pdf->save(storage_path().'_salesBySeller.pdf');
-
-        
-
-        return $pdf->download($current_date_time.'salesBySeller.pdf');
+        $pdf->save(storage_path().'_salesByProduct.pdf');
+        return $pdf->download($current_date_time.'salesByProduct.pdf');
     }
 }
