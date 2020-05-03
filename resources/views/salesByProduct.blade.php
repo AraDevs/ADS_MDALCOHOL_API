@@ -26,7 +26,7 @@
         <h1>MD Alcohol</h1>
         <hr>
         
-        <h4>Reporte de ventas de {{ $data->first()->client->seller->name }}</h4>
+        <h4>Reporte de ventas por {{ $inventory->name }}</h4>
         <h5>{{Carbon\Carbon::now()->format("d/m/Y")}}</h5>
     </header>
     <body>
