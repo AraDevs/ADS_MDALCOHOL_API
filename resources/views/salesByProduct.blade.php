@@ -26,7 +26,7 @@
         <h1>MD Alcohol</h1>
         <hr>
         
-        <h4>Reporte de ventas por {{ $inventory->name }}</h4>
+        <h4>Reporte de ventas de {{ $data->first()->inventory->name }}</h4>
         <h5>{{Carbon\Carbon::now()->format("d/m/Y")}}</h5>
     </header>
     <body>
@@ -57,7 +57,7 @@
                         <td scope="row">{{ \Carbon\Carbon::parse($bill->bill->bill_date)->format('d/m/Y') }}</td>
                         <td>{{ $bill->quantity }}</td>
                         <td>{{ $bill->price }}</td>
-                        <td>${{ ($bill->price)*($bill->quantity) }}</td>
+                        <td>${{ number_format(($bill->price)*($bill->quantity),2) }}</td>
                     </tr>
                 @endforeach
                     
